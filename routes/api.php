@@ -47,4 +47,6 @@ Route::post('/login',[LoginController::class,'login']);
 
 Route::get('/user/{id}',[RegisterController::class,'userDetails']);
 Route::get('/products',[ProductController::class,'getallproduct']);
+Route::get('/about',[UserController::class,'about']);
+Route::get('/contactinfo',[UserController::class,'contactInfo']);
 

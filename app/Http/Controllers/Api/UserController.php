@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\About;
+use App\Models\ContactInfo;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,6 +73,25 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Successfully logged out'
         ]);
+    }
+
+    // get about info
+    public function about(){
+        $data =  About::where('id','=', 1)->first();
+        $responseArray = [
+            'status'=>'ok',
+            'data'=>$data
+        ]; 
+        return response()->json($responseArray,200);
+    }
+
+    public function contactInfo(){
+        $data =  ContactInfo::where('id','=', 1)->first();
+        $responseArray = [
+            'status'=>'ok',
+            'data'=>$data
+        ]; 
+        return response()->json($responseArray,200);
     }
 
 
