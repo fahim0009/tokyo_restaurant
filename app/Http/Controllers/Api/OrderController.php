@@ -28,23 +28,27 @@ class OrderController extends Controller
     public function storeorder(Request $request)
     {
                 
-        $sub_total = Cart::subtotal();
+        
         $data['user_id'] = Auth::User()->id;
         $data['shipping_address'] = $request['shipping_address'];
         $data['payment_status'] = "Unpaid";
         $data['delivery_status'] = "Pending";
-        $data['grand_total'] = $request['grand_total'];
+        // $data['grand_total'] = $request['grand_total'];
         $data['shipping_cost'] = $request['shipping_cost'];
         $data['discount'] = $request['discount'];
-        $data['net_total'] = $request['net_total'];
+        // $data['net_total'] = $request['net_total'];
         $data['invoice_code'] = date('Ymd-his');
         $data['status'] = 0;
         $order = Order::create($data);
+
         if ($order){
             $allProducts = json_decode($request->cart, true);
+            $grand_total = 0;
 
             foreach ($allProducts as $item)
             {
+                $grand_total += $item['price']*$item['quantity'];
+
                 $product['order_id'] = $order->id;
                 $product['product_id'] = $item['product_id'];
                 $product['name'] = $item['name'];
@@ -53,10 +57,18 @@ class OrderController extends Controller
                 $product['each_total_price'] = round( $item['price'] * $item['quantity']);
                 OrderDetail::create($product);
             }
+
+            $order->grand_total = $grand_total;
+            $order->net_total = $grand_total + $order->shipping_cost - $order->discount;
+            
+            if($order->save()){
             
             $success['response'] = 'Order submitted successfully';
             $success['order'] = $order;
-            return response()->json(['success'=>true,'response'=> $success], 200);
+            $success['product'] = $product;
+            return response()->json(['success'=>true,'response'=> $success], 200);  
+            }
+
         }else {
             return response()->json(['success'=>true,'response'=> 'Server Error!!'], 404);
         }
