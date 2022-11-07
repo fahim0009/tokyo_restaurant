@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\DeliveryCharge;
 use Illuminate\Support\Facades\DB;
 Use Image;
 use Illuminate\support\Facades\Auth;
@@ -27,6 +28,9 @@ class OrderController extends Controller
 
     public function storeorder(Request $request)
     {
+
+        
+        $deliverycharge = DeliveryCharge::where('id','=', 1)->first();
                 
         
         $data['user_id'] = Auth::User()->id;
@@ -34,9 +38,8 @@ class OrderController extends Controller
         $data['payment_status'] = "Unpaid";
         $data['delivery_status'] = "Pending";
         // $data['grand_total'] = $request['grand_total'];
-        $data['shipping_cost'] = $request['shipping_cost'];
+        // $data['shipping_cost'] = $request['shipping_cost'];
         $data['discount'] = $request['discount'];
-        // $data['net_total'] = $request['net_total'];
         $data['invoice_code'] = date('Ymd-his');
         $data['status'] = 0;
         $order = Order::create($data);
@@ -59,7 +62,13 @@ class OrderController extends Controller
             }
 
             $order->grand_total = $grand_total;
-            $order->net_total = $grand_total + $order->shipping_cost - $order->discount;
+            if ($order->grand_total >= $deliverycharge->order_amount) {
+                $data->shipping_cost = "0";
+            } else {
+                $data->shipping_cost = $deliverycharge->amount;
+            }
+            
+            $order->net_total = $grand_total + $data->shipping_cost - $order->discount;
             
             if($order->save()){
             

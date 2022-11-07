@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DeliveryChargeController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\User\UserController;
 
@@ -70,6 +72,21 @@ Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], functi
     Route::get('/product/{id}/edit', [ProductController::class, 'edit']);
     Route::put('/product/{id}', [ProductController::class, 'update']);
     Route::get('/product/{id}', [ProductController::class, 'delete']);
+
+    // coupon 
+    Route::get('/coupon', [CouponController::class, 'index'])->name('admin.coupon');
+    Route::post('/coupon', [CouponController::class, 'store']);
+    Route::get('/coupon/{id}/edit', [CouponController::class, 'edit']);
+    Route::put('/coupon/{id}', [CouponController::class, 'update']);
+    Route::get('/coupon/{id}', [CouponController::class, 'delete']);
+    Route::get('/activecoupon', [CouponController::class, 'activecoupon']);
+
+
+    // delivery charge 
+    Route::get('/delivery-charge', [DeliveryChargeController::class, 'index'])->name('deliverycharge');
+    Route::get('/delivery-charge/{id}/edit', [DeliveryChargeController::class, 'edit']);
+    Route::post('/delivery-charge/{id}', [DeliveryChargeController::class, 'update']);
+
 
 });
 //admin part end

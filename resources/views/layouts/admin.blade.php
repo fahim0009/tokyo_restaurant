@@ -156,6 +156,14 @@
           </ul>
         </li>
 
+        @if(Auth::user()->is_type == 'admin' || in_array('3', json_decode(Auth::user()->staff->role->permissions)))
+        <li><a class="app-menu__item" href="{{ route('admin.coupon')}}" id="coupon"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Coupon</span></a></li>
+        @endif
+
+        @if(Auth::user()->is_type == 'admin' || in_array('3', json_decode(Auth::user()->staff->role->permissions)))
+        <li><a class="app-menu__item" href="{{ route('deliverycharge')}}" id="deliverycharge"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Delivery charge</span></a></li>
+        @endif
+
 
         {{-- <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Charts</span></a></li> --}}
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Code Master</span><i class="treeview-indicator fa fa-angle-right"></i></a>

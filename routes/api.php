@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\ProductController; 
 use App\Http\Controllers\Api\UserController; 
 use App\Http\Controllers\Api\OrderController; 
+use App\Http\Controllers\Api\CartController; 
+use App\Http\Controllers\Api\DeliveryChargeController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/checkout',[OrderController::class,'storeorder']);
     // get user all order
     Route::get('/order',[OrderController::class,'allOrder']);
+    // get user all order
+    Route::get('/coupon',[CartController::class,'coupon']);
     //for api
 });
 
@@ -49,4 +53,5 @@ Route::get('/user/{id}',[RegisterController::class,'userDetails']);
 Route::get('/products',[ProductController::class,'getallproduct']);
 Route::get('/about',[UserController::class,'about']);
 Route::get('/contactinfo',[UserController::class,'contactInfo']);
+Route::get('/deliverycharge',[DeliveryChargeController::class,'deliverycharge']);
 
