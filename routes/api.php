@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     // get user all order
     Route::get('/order',[OrderController::class,'allOrder']);
     // get user all order
-    Route::get('/coupon',[CartController::class,'coupon']);
+    Route::post('/coupon',[CartController::class,'coupon']);
     //for api
 });
 

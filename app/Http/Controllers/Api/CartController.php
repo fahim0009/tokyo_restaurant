@@ -9,10 +9,10 @@ use Session;
 
 class CartController extends Controller
 {
-    public function coupon()
+    public function coupon(Request $request)
     {
         
-        $code = $_GET['code'];
+        $code = $request->code;
         $total = (float)preg_replace('/[^0-9\.]/ui','',$_GET['total']);;
         $fnd = Coupon::where('code','=',$code)->get()->count();
         if($fnd < 1)
